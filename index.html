@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hanrui's blog</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- 載入 Fira Code 字體，以便轉場文字使用 -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Index 頁面本身的轉場覆蓋層 (用於載入動畫) -->
+  <div id="index-transition-overlay"></div>
+
+  <canvas id="canvas"></canvas>
+  
+  <div class="content" id="mainContent">
+    <div id="title">💫</div>
+    <div id="name">Hanrui.</div>
+    <div id="description">
+      Sophomore year of high school from SAIHS, Interested in blue team and forensics, B33F 50uP team member.
+    </div>
+    <div id="dynamic-text"></div>
+  </div>
+
+  <!-- 按鈕 -->
+  <button class="btn experienceBtn" id="experienceBtn">
+    <span class="btn-highlight"></span>Experience
+  </button>
+  <button class="btn writeupsBtn" id="blogBtn">
+    <span class="btn-highlight"></span>Writeups
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>

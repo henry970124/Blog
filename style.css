@@ -1,170 +1,137 @@
 /* ========== 全局樣式 ========== */
 body {
-    margin: 0;
-    background: #000;
-    font-family: 'Courier New', monospace;
-    color: #fff;
-    overflow-x: hidden;
-  }
-  
-  /* ========== 畫布（背景層） ========== */
-  #canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1; /* 最底層，背景層 */
-  }
-  
-  /* ========== 內容區 ========== */
-  .content {
-    text-align: center;
-    padding: 80px 20px;
-    position: relative;
-    z-index: 10; /* 內容層，低於白色長方形 */
-    animation: fadeIn 2s ease-in-out;
-    transition: transform 0.5s ease;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* 當內容被往右推時（長方形展開） */
-  .content.shifted {
-    transform: translateX(200px);
-  }
-  
-  #title {
-    font-size: 2rem;
-    color: #00ffaa;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  
-  #name {
-    font-size: 4rem;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 20px;
-  }
-  
-  #description {
-    font-size: 1.5rem;
-    color: #fff;
-    margin-bottom: 40px;
-  }
-  
-  #dynamic-text {
-    font-size: 1.5rem;
-    color: #00ffaa;
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    margin-bottom: 20px; /* 與按鈕保持間距 */
-  }
-  
-  .cursor {
-    display: inline-block;
-    width: 10px;
-    height: 1.5rem;
-    background: #00ffaa;
-    vertical-align: middle;
-    animation: blink 0.7s infinite;
-  }
-  
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-  
-  /* ========== 按鈕（Experience / Writeups） ========== */
-  .btn {
-    padding: 16px 32px;
-    font-size: 2rem;
-    color: #fff;
-    background: transparent;
-    border: none; /* 無邊框 */
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 過渡效果 */
-    font-weight: bold;
-    outline: none;
-    font-family: 'Courier New', monospace;
-    position: absolute; /* 使用絕對定位固定位置 */
-    z-index: 30; /* 最高層 */
-  }
-  
-  .btn:hover, .btn:focus {
-    transform: translateY(-3px); /* 微微凸起 */
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3); /* 立體陰影效果 */
-  }
-  
-  .btn-highlight {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border-radius: 5px;
-    z-index: -1;
-    transition: transform 1s ease, background 0s;
-    transform: scale(1);
-    transform-origin: center;
-  }
-  
-  .btn.active .btn-highlight {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(50);
-  }
-  
-  /* Experience 按鈕在中左 */
-  .experienceBtn {
-    left: 30%;
-    top: 60%; /* 調整位置到動態文字下方 */
-  }
-  
-  /* Writeups 按鈕在中右 */
-  .writeupsBtn {
-    right: 30%;
-    top: 60%; /* 與 Experience 按鈕對齊 */
-  }
-  
-  /* ========== 左側白色長方形 ========== */
-  .left-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    background: #fff;
-    overflow: hidden;
-    transition: width 0.5s ease;
-    z-index: 20; /* 第二層，高於內容但低於按鈕 */
-  }
-  
-  /* 當按鈕 hover 時，只展開到 200px 寬 */
-  .left-panel.focused {
-    width: 200px;
-  }
-  
-  /* 當按鈕 click 時，全螢幕 */
-  .left-panel.expanded {
-    width: 100%;
-  }
-  
-  /* 置中顯示的 Experience 字樣 */
-  .left-panel-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    font-size: 4rem;
-    color: #000;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  
-  .left-panel-text.visible {
-    opacity: 1;
-  }
+  margin: 0;
+  background: #000; /* 最終背景色 */
+  font-family: 'Courier New', monospace;
+  color: #fff;
+  overflow-x: hidden;
+  transition: background 1s ease; /* 為了從白色背景漸變到黑色 */
+}
+
+/* Index 頁面進入轉場覆蓋層 */
+#index-transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff; /* 初始為白色 */
+  z-index: 100; /* 確保在最上層 */
+  opacity: 1; /* 初始完全可見 */
+  transition: opacity 0.8s ease; /* 淡出動畫時間 */
+  pointer-events: auto; /* 初始阻止點擊，直到淡出 */
+}
+
+/* ========== 畫布（背景層） ========== */
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1; /* 最底層，背景層 */
+}
+
+/* ========== 內容區 ========== */
+.content {
+  text-align: center;
+  padding: 80px 20px;
+  position: relative;
+  z-index: 10;
+  opacity: 0; /* 初始隱藏，由 JS 控制顯示 */
+  transition: opacity 1s ease; /* 內容漸入過渡 */
+}
+
+#title {
+  font-size: 2rem;
+  color: #00ffaa;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+#name {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+#description {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+#dynamic-text {
+  font-size: 1.5rem;
+  color: #00ffaa;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-bottom: 20px; /* 與按鈕保持間距 */
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.5rem;
+  background: #00ffaa;
+  vertical-align: middle;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ========== 按鈕（Experience / Writeups） ========== */
+.btn {
+  padding: 16px 32px;
+  font-size: 2rem;
+  color: #fff;
+  background: transparent;
+  border: none; /* 無邊框 */
+  cursor: pointer;
+  opacity: 0; /* 初始隱藏，由 JS 控制顯示 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 1s ease; /* 按鈕漸入過渡 */
+  font-weight: bold;
+  outline: none;
+  font-family: 'Courier New', monospace;
+  position: absolute; /* 使用絕對定位固定位置 */
+  z-index: 30; /* 最高層 */
+}
+
+.btn:hover, .btn:focus {
+  transform: translateY(-3px); /* 微微凸起 */
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3); /* 立體陰影效果 */
+}
+
+.btn-highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border-radius: 5px;
+  z-index: -1;
+  transition: transform 1s ease, background 0s;
+  transform: scale(1);
+  transform-origin: center;
+}
+
+.btn.active .btn-highlight {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(50);
+}
+
+/* Experience 按鈕在中左 */
+.experienceBtn {
+  left: 30%;
+  top: 60%; /* 調整位置到動態文字下方 */
+}
+
+/* Writeups 按鈕在中右 */
+.writeupsBtn {
+  right: 30%;
+  top: 60%; /* 與 Experience 按鈕對齊 */
+}
