@@ -1,44 +1,259 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Experience - Hanrui's Blog</title>
-  <link rel="stylesheet" href="experience.css">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access - Hacker Terminal</title>
+    <link rel="stylesheet" href="experience.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="transition-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 100; transition: left 0.5s ease;">
-    <div id="experience-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: #000; z-index: 101;">Experience</div>
-  </div>
-  <canvas id="matrix-canvas"></canvas>
-  <div id="experience-content">
-    <h1>$ My Cyber life in 2023-2025</h1>
-    <h2>CTF Challenge</h2>
-    <p>網路安全全國技能競賽北區 Rank 1.</p>
-    <p>Pearl CTF 2025 Rank 79/1055. (two firstblood in crypto)</p>
-    <p>HITCON Cyber range 2024 student field</p>
-    <p>Vishwa CTF 2025 Rank 51/730.</p>
-    <p>AIS3 EOF 2025 FINAL Rank 5/11. 潛力獎</p>
-    <p>ACE CTF 2024 Rank 99/659.</p>
-    <p>AIS3 2024 pre-exam Rank 113.</p>
-    <p>downunder CTF 2024 Rank 44/1515.</p>
-    <p>picoCTF 2024</p>
-    <p>SCIST CTF FINAL 3rd place.</p>
-    <h2>Participate in activities</h2>
-    <p>THJCC CTF Staff / Forensic maker</p>
-    <p>SITCON Attendee.</p>
-    <p>THJCC 2024 Winter CTF Staff / Text question</p>
-    <p>IPAS 資安工程師初級證照</p>
-    <p>種子培訓工作坊 Attendee</p>
-    <p>HITCON CTF 2024 菁英人才交流活動 Attendee</p>
-    <p>HITCON CMT 2024 Attendee</p>
-    <p>AIS3 2024 最佳專題</p>
-    <p>AIS3 2025 結業</p>
-    <p>B33F 50UP member.</p>
-    <p>Cybersec 2024 Attendee.</p>
-  </div>
-  <a href="#" id="backButton" class="back-button">← Back</a>
-  <script src="experience.js"></script>
+    <!-- 轉場覆蓋層 -->
+    <div id="transition-overlay">
+        <div class="transition-text">ACCESSING SYSTEM...</div>
+    </div>
+
+    <!-- 矩陣雨背景 -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- 駭客終端主界面 -->
+    <div class="terminal" id="terminal">
+        <!-- 終端標題列 -->
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="control red"></span>
+                <span class="control yellow"></span>
+                <span class="control green"></span>
+            </div>
+            <div class="terminal-title">root@hanrui-system:~$ ./experience.sh</div>
+        </div>
+        
+        <!-- 終端內容 -->
+        <div class="terminal-body">
+            <!-- 命令行 -->
+            <div class="prompt-line">
+                <span class="prompt">root@hanrui-system:~$</span>
+                <span class="command">cat /var/log/achievements.log</span>
+            </div>
+            
+            <!-- 輸出區域 -->
+            <div class="output-section">
+                <div class="log-entry">
+                    <span class="log-time">[2025-01-07 14:30:15]</span>
+                    <span class="log-level info">[INFO]</span>
+                    <span class="log-msg">Accessing cyber warfare records...</span>
+                </div>
+                
+                <div class="separator">==================== CTF BATTLE LOGS ====================</div>
+                
+                <!-- CTF 成就區塊 -->
+                <div class="profile-section">
+                    <div class="section-title">🏆 Competition Achievements</div>
+                    
+                    <div class="achievement">
+                        <div class="rank gold">RANK #1</div>
+                        <div class="event">54TH網路安全全國技能競賽北區</div>
+                        <div class="desc">CHAMPIONSHIP ACQUIRED • NORTHERN REGION DOMINATED</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank gold">RANK #6</div>
+                        <div class="event">55TH網路安全全國技能競賽北區</div>
+                        <div class="desc">EXCELLENT PERFORMANCE • TOP 6 ACHIEVEMENT</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank elite">RANK #79</div>
+                        <div class="event">Pearl CTF 2025</div>
+                        <div class="desc">2 FIRST BLOOD ACHIEVEMENTS • CRYPTO SPECIALIST • 79/1055 PARTICIPANTS</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank global">RANK #51</div>
+                        <div class="event">Vishwa CTF 2025</div>
+                        <div class="desc">GLOBAL COMPETITION • 51/730 WORLDWIDE HACKERS</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank premium">STUDENT</div>
+                        <div class="event">HITCON Cyber Range 2024</div>
+                        <div class="desc">ADVANCED PENETRATION TESTING • ELITE TRAINING COMPLETED</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank platinum">RANK #5</div>
+                        <div class="event">AIS3 EOF 2025 FINAL</div>
+                        <div class="desc">POTENTIAL AWARD • TOP 5 FINALIST • 5/11 ELITE HACKERS</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank silver">RANK #113</div>
+                        <div class="event">AIS3 2024 Pre-exam</div>
+                        <div class="desc">FIRST ATTEMPT • TOP 113 QUALIFIER</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank gold">RANK #37</div>
+                        <div class="event">AIS3 2025 Pre-exam</div>
+                        <div class="desc">SECOND ATTEMPT • TOP 37 QUALIFIER • SIGNIFICANT IMPROVEMENT</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank international">RANK #44</div>
+                        <div class="event">DownUnder CTF 2024</div>
+                        <div class="desc">INTERNATIONAL CTF • 44/1515 GLOBAL PARTICIPANTS</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank international">RANK #99</div>
+                        <div class="event">ACE CTF 2024</div>
+                        <div class="desc">INTERNATIONAL CTF • 99/659 GLOBAL PARTICIPANTS</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank elite">COMPLETE</div>
+                        <div class="event">picoCTF 2024</div>
+                        <div class="desc">BEGINNER TO ADVANCED • ALL CHALLENGES SOLVED</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank medal">RANK #3</div>
+                        <div class="event">SCIST CTF FINAL</div>
+                        <div class="desc">PODIUM FINISH • BRONZE MEDAL ACHIEVEMENT</div>
+                    </div>
+
+                    <div class="achievement">
+                        <div class="rank gold">RANK #1</div>
+                        <div class="event">EDX CTF</div>
+                        <div class="desc">THANKS TEAMMATE • GOLD MEDAL ACHIEVEMENT</div>
+                    </div>
+                </div>
+                
+                <div class="separator">================== COMMUNITY ACTIVITIES ==================</div>
+                
+                <!-- 社群活動區塊 -->
+                <div class="profile-section">
+                    <div class="section-title">🛡️ Community Involvement</div>
+                    
+                    <div class="cert">
+                        <div class="cert-badge ipas">STAFF</div>
+                        <div class="cert-name">THJCC CTF • Forensic Maker</div>
+                        <div class="cert-status verified">CHALLENGE CREATOR</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ipas">STAFF</div>
+                        <div class="cert-name">THJCC 2024 Winter CTF</div>
+                        <div class="cert-status verified">QUESTION DESIGNER</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ais3">ATTENDEE</div>
+                        <div class="cert-name">SITCON 2024</div>
+                        <div class="cert-status verified">TECH NETWORKING</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ais3">ATTENDEE</div>
+                        <div class="cert-name">HITCON CTF 2024 菁英人才交流活動</div>
+                        <div class="cert-status verified">STALL HELPER</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ais3">ATTENDEE</div>
+                        <div class="cert-name">HITCON CMT 2024</div>
+                        <div class="cert-status verified">HACKER GATHER</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ais3">ATTENDEE</div>
+                        <div class="cert-name">2024 CYBERSEC </div>
+                        <div class="cert-status verified">CORPORATE COMMUNITY</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge award">BEST PROJECT</div>
+                        <div class="cert-name">AIS3 2024</div>
+                        <div class="cert-status verified">INNOVATION AWARD WINNER</div>
+                    </div>
+                    <div class="cert">
+                        <div class="cert-badge ais3">ATTENDEE</div>
+                        <div class="cert-name">AIS3 2025</div>
+                        <div class="cert-status verified">KNOWLEDGE GAINED SIGNIFICANTLY</div>
+                    </div>
+
+                    <div class="cert">
+                        <div class="cert-badge ipas">ATTENDEE</div>
+                        <div class="cert-name">2024種子培訓工作坊</div>
+                        <div class="cert-status verified">CONFERENCE</div>
+                    </div>
+                </div>
+                
+                <div class="separator">==================== SKILL MATRIX ====================</div>
+                
+                <!-- 技能區塊 -->
+                <div class="profile-section">
+                    <div class="section-title">💻 Technical Skills</div>
+                    
+                    <div class="skill-grid">
+                        <div class="skill">
+                            <span class="skill-name">Digital Forensics</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill">
+                            <span class="skill-name">Cryptography</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill">
+                            <span class="skill-name">Web Security</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill">
+                            <span class="skill-name">Reverse Engineering</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="75"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill">
+                            <span class="skill-name">Network Analysis</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="log-entry success">
+                    <span class="log-time">[2025-01-07 14:30:45]</span>
+                    <span class="log-level success">[SUCCESS]</span>
+                    <span class="log-msg">EOF - Experience log successfully displayed</span>
+                </div>
+                
+                <!-- 命令行游標 -->
+                <div class="cursor-line">
+                    <span class="prompt">root@hanrui-system:~$</span>
+                    <span class="cursor">_</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 退出按鈕 -->
+    <div class="exit-btn" id="exitBtn">
+        <span class="exit-icon">⬅</span>
+        <span class="exit-text">EXIT_SYSTEM</span>
+    </div>
+
+    <script src="experience.js"></script>
 </body>
 </html>

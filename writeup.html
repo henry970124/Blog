@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writeups - Hanrui's Blog</title>
+  <link rel="stylesheet" href="writeup.css">
+  <!-- 載入更好的字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- 改進的轉場覆蓋層 -->
+  <div id="transition-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0a0a0f 0%, #1a0f2e 50%, #0a0a0f 100%); z-index: 100; opacity: 1; transition: opacity 1.5s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div id="writeups-text" style="font-size: 3rem; color: #64ffda; z-index: 101; font-family: 'Fira Code', monospace; text-shadow: 0 0 20px #64ffda, 0 0 40px #64ffda; margin-bottom: 2rem;">Writeups</div>
+    
+    <!-- 動態個人簡介 -->
+    <div id="dynamic-profile" style="font-size: 1.5rem; color: #a7c7ff; font-family: 'Fira Code', monospace; text-align: center; opacity: 0; transform: translateY(20px); transition: all 0.8s ease;">
+      <span id="intro-text">I'm </span>
+      <span id="rotating-text" style="color: #64ffda; text-shadow: 0 0 15px #64ffda;"></span>
+      <span id="cursor" style="animation: blink 1s infinite; color: #64ffda;">|</span>
+    </div>
+  </div>
+
+  <!-- 星空背景畫布 -->
+  <canvas id="starfield-canvas"></canvas>
+
+  <!-- 主要內容 -->
+  <div id="writeup-content">
+    <div class="header">
+      <h1 class="title">✨ Writeups Collection</h1>
+      <p class="subtitle">探索網路安全的星辰大海</p>
+    </div>
+
+    <div class="writeup-grid">
+      <!-- SCIST Final CTF Writeup -->
+      <div class="category-section">
+        <h2 class="category-title">🏆 SCIST Final CTF Writeup</h2>
+        
+        <div class="writeup-card" onclick="openWriteup('scist-final-ctf')">
+          <div class="card-header">
+            <h3>SCIST Final CTF 2024</h3>
+            <span class="tag writeup">Writeup</span>
+          </div>
+          <p class="description">
+            SCIST Final CTF 銅牌獲獎完整 Writeup，包含所有解題過程、思路分析與技術細節。涵蓋 Crypto、Forensics、Web、Misc 等多個領域的挑戰解法。
+          </p>
+          <div class="metadata">
+            <span class="date">2024-12-15</span>
+            <span class="difficulty">★★★★★</span>
+            <span class="word-count">約 40,000 字</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 返回按鈕 -->
+  <a href="#" id="backButton" class="back-button">← Back to Universe</a>
+
+  <script src="writeup.js"></script>
+</body>
+</html>

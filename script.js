@@ -1,284 +1,503 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const indexTransitionOverlay = document.getElementById('index-transition-overlay'); // 用於 index.html 初始載入動畫
-    const dynamicTextEl = document.getElementById("dynamic-text");
-    const mainContent = document.getElementById('mainContent');
-    const experienceBtn = document.getElementById("experienceBtn");
-    const blogBtn = document.getElementById("blogBtn");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // --- 星星、流星、動畫迴圈的變數和函數 ---
-    let time = 0;
-    ctx.globalCompositeOperation = 'source-over';
-
-    const starCount = 150;
-    let stars = [];
-    for (let i = 0; i < starCount; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 1.5,
-            baseAlpha: Math.random() * 0.5 + 0.5,
-            phase: Math.random() * Math.PI * 2
-        });
+// ========== 宇宙探索者 - 壯觀簡潔版 腳本 ==========
+class CosmicExplorer {
+    constructor() {
+        this.canvases = {};
+        this.animations = [];
+        this.isLoaded = false;
+        this.init();
     }
 
-    let shootingStars = [];
-    let animationFrameId;
-
-    function spawnShootingStar() {
-        const startX = Math.random() * canvas.width;
-        const startY = -50;
-        const speedX = 5 + Math.random() * 5;
-        const speedY = 5 + Math.random() * 5;
-        shootingStars.push({ x: startX, y: startY, speedX, speedY, length: 150, opacity: 1 });
+    init() {
+        this.setupCanvases();
+        this.startLoader();
+        this.initializeAnimations();
+        this.setupNavigation();
     }
 
-    function updateShootingStars() {
-        shootingStars.forEach((star, index) => {
-            star.x += star.speedX;
-            star.y += star.speedY;
-            star.opacity -= 0.01;
-            if (star.opacity <= 0 || star.x > canvas.width || star.y > canvas.height) {
-                shootingStars.splice(index, 1);
+    setupCanvases() {
+        const layers = ['starfield', 'nebula', 'meteors'];
+        layers.forEach(layerId => {
+            const canvas = document.getElementById(layerId);
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                this.canvases[layerId] = { canvas, ctx };
             }
         });
     }
 
-    function drawShootingStars() {
-        shootingStars.forEach(star => {
-            ctx.save();
-            ctx.globalAlpha = star.opacity;
-            ctx.strokeStyle = "#fff";
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            const speed = Math.sqrt(star.speedX * star.speedX + star.speedY * star.speedY);
-            ctx.moveTo(star.x, star.y);
-            ctx.lineTo(star.x - star.speedX * star.length / speed, star.y - star.speedY * star.length / speed);
-            ctx.stroke();
-            ctx.restore();
-        });
-    }
+    startLoader() {
+        const loader = document.getElementById('cosmic-loader');
+        const progressFill = document.querySelector('.progress-fill');
+        const loaderStatus = document.querySelector('.loader-status');
+        
+        const statusMessages = [
+            'INITIALIZING UNIVERSE...',
+            'CALCULATING STELLAR POSITIONS...',
+            'ESTABLISHING COSMIC CONNECTIONS...',
+            'PREPARING WARP DRIVE...',
+            'ENTERING COSMIC REALM...'
+        ];
 
-    function animate() {
-        ctx.fillStyle = '#1a1a2e'; // 背景顏色
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        let progress = 0;
+        let messageIndex = 0;
 
-        time += 0.02;
-        stars.forEach(star => {
-            let alpha = star.baseAlpha + 0.2 * Math.sin(time + star.phase);
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-            ctx.fill();
-        });
-
-        if (Math.random() < 0.005) { // 隨機生成流星
-            spawnShootingStar();
-        }
-        updateShootingStars();
-        drawShootingStars();
-
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
-    // 動態文字打字效果的變數和函數
-    const phrases = ["CTF PLAYER", "WELCOME TO MY BLOG", "FORENSICS ENTHUSIAST", "BLUE TEAMER"];
-    let phraseIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let typeWriterTimeoutId;
-
-    function typeWriter() {
-        const currentPhrase = phrases[phraseIndex];
-        if (!isDeleting) {
-            if (charIndex <= currentPhrase.length) {
-                dynamicTextEl.innerHTML = currentPhrase.substring(0, charIndex) + '<span class="cursor"></span>';
-                charIndex++;
-                typeWriterTimeoutId = setTimeout(typeWriter, 100);
+        const updateLoader = () => {
+            if (progress < 100) {
+                progress += Math.random() * 2 + 0.5;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = `${progress}%`;
+                
+                if (progress > messageIndex * 20 && messageIndex < statusMessages.length) {
+                    loaderStatus.textContent = statusMessages[messageIndex];
+                    messageIndex++;
+                }
+                
+                requestAnimationFrame(updateLoader);
             } else {
-                typeWriterTimeoutId = setTimeout(() => {
-                    isDeleting = true;
-                    typeWriter();
-                }, 2000);
+                // 更平滑的轉場效果
+                setTimeout(() => {
+                    loader.style.transition = 'opacity 1.5s ease-out, transform 1.5s ease-out';
+                    loader.style.opacity = '0';
+                    loader.style.transform = 'scale(1.1)';
+                    
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        this.isLoaded = true;
+                        this.startTextRotation(); // 啟動文字動畫
+                        this.startUptimeDisplay(); // 啟動上線時間顯示
+                    }, 1500);
+                }, 500);
             }
-        } else {
-            if (charIndex >= 0) {
-                dynamicTextEl.innerHTML = currentPhrase.substring(0, charIndex) + '<span class="cursor"></span>';
-                charIndex--;
-                typeWriterTimeoutId = setTimeout(typeWriter, 50);
-            } else {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeWriterTimeoutId = setTimeout(typeWriter, 500);
-            }
-        }
+        };
+
+        updateLoader();
     }
 
-    // --- 處理進入轉場動畫 (從白色背景漸入) ---
-    // 讓白色覆蓋層淡出，然後開始其他頁面動畫
-    setTimeout(() => {
-        indexTransitionOverlay.style.opacity = '0'; // 開始淡出白色覆蓋層
-        indexTransitionOverlay.style.pointerEvents = 'none'; // 允許點擊下方內容
+    initializeAnimations() {
+        this.createStarfield();
+        this.createNebula();
+        this.createMeteors();
+        this.startAnimationLoop();
+    }
 
-        // 在覆蓋層淡出完成後，開始其他動畫和內容的顯示
-        setTimeout(() => {
-            if (indexTransitionOverlay.parentNode) {
-                indexTransitionOverlay.parentNode.removeChild(indexTransitionOverlay); // 淡出後移除
-            }
-            
-            mainContent.style.opacity = '1';
-            experienceBtn.style.opacity = '1';
-            blogBtn.style.opacity = '1';
+    createStarfield() {
+        const { canvas, ctx } = this.canvases.starfield;
+        const stars = [];
+        const numStars = 300;
 
-            animate();
-            setTimeout(typeWriter, 1000);
-        }, 800); // 等待 indexTransitionOverlay 淡出動畫 (0.8秒) 完成
-    }, 100); // 頁面載入後稍作延遲，確保 overlay 初始狀態被正確渲染
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        stars = [];
-        for (let i = 0; i < starCount; i++) {
+        for (let i = 0; i < numStars; i++) {
             stars.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                radius: Math.random() * 1.5,
-                baseAlpha: Math.random() * 0.5 + 0.5,
-                phase: Math.random() * Math.PI * 2
+                z: Math.random() * 1000 + 1,
+                size: Math.random() * 2 + 0.5,
+                speed: Math.random() * 1 + 0.2,
+                twinkle: Math.random() * Math.PI * 2
             });
         }
-        shootingStars = []; 
-    });
 
-    // Experience 按鈕事件 (新增從左邊滑入的白色轉場動畫)
-    experienceBtn.addEventListener("click", (event) => {
-        event.preventDefault(); // 阻止按鈕預設的導航行為
+        this.animations.push(() => {
+            ctx.fillStyle = 'rgba(2, 6, 23, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        cancelAnimationFrame(animationFrameId); // 停止背景動畫
-        clearTimeout(typeWriterTimeoutId); // 停止打字效果
+            stars.forEach(star => {
+                // 星星向前移動
+                star.z -= star.speed;
+                if (star.z <= 0) {
+                    star.z = 1000;
+                    star.x = Math.random() * canvas.width;
+                    star.y = Math.random() * canvas.height;
+                }
 
-        // 創建一個新的白色覆蓋層來處理離開轉場
-        const transitionCurtain = document.createElement('div');
-        transitionCurtain.id = 'transition-curtain'; // 獨立ID
-        transitionCurtain.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: -100%; /* 初始位置在螢幕左側外 */
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            z-index: 200; /* 確保在最上層 */
-            transition: left 0.8s ease; /* 滑動動畫時間 */
-            pointer-events: auto;
-        `;
-        document.body.appendChild(transitionCurtain);
+                // 計算螢幕位置
+                const x = (star.x - canvas.width / 2) * (1000 / star.z) + canvas.width / 2;
+                const y = (star.y - canvas.height / 2) * (1000 / star.z) + canvas.height / 2;
+                const size = star.size * (1000 / star.z);
 
-        // 創建 "Experience" 文字元素，它將跟隨轉場層一起滑動
-        const experienceTextDiv = document.createElement('div');
-        experienceTextDiv.id = 'transition-experience-text-index'; // 獨特 ID，防止與 experience.html 內的衝突
-        experienceTextDiv.innerText = 'Experience';
-        experienceTextDiv.style.cssText = `
-            position: absolute; /* 相對於 transitionCurtain 定位 */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4rem;
-            color: #000; /* 白色背景上的黑色文字 */
-            opacity: 0; /* 初始隱藏 */
-            transition: opacity 0.3s ease; /* 文字漸顯動畫 */
-            font-family: 'Fira Code', monospace; /* 使用 Fira Code 字體 */
-        `;
-        transitionCurtain.appendChild(experienceTextDiv);
+                if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
+                    // 閃爍效果
+                    star.twinkle += 0.05;
+                    const alpha = (Math.sin(star.twinkle) + 1) * 0.5 * (1 - star.z / 1000);
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, 2 * Math.PI);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                    ctx.fill();
 
-        // 隱藏當前頁面內容和按鈕
-        mainContent.style.opacity = '0';
-        experienceBtn.style.opacity = '0';
-        blogBtn.style.opacity = '0';
+                    // 亮星加光暈
+                    if (size > 1.5) {
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = '#06b6d4';
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            });
+        });
+    }
+
+    createNebula() {
+        const { canvas, ctx } = this.canvases.nebula;
+        let time = 0;
+
+        this.animations.push(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 0.01;
+
+            // 創建星雲效果
+            const gradient = ctx.createRadialGradient(
+                canvas.width * 0.3, canvas.height * 0.7, 0,
+                canvas.width * 0.3, canvas.height * 0.7, canvas.width * 0.8
+            );
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.3)');
+            gradient.addColorStop(0.5, 'rgba(139, 69, 19, 0.2)');
+            gradient.addColorStop(1, 'transparent');
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 第二層星雲
+            const gradient2 = ctx.createRadialGradient(
+                canvas.width * 0.7, canvas.height * 0.3, 0,
+                canvas.width * 0.7, canvas.height * 0.3, canvas.width * 0.6
+            );
+            gradient2.addColorStop(0, 'rgba(251, 191, 36, 0.2)');
+            gradient2.addColorStop(0.7, 'rgba(16, 185, 129, 0.1)');
+            gradient2.addColorStop(1, 'transparent');
+
+            ctx.fillStyle = gradient2;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+    }
+
+    createMeteors() {
+        const { canvas, ctx } = this.canvases.meteors;
+        const meteors = [];
+
+        // 創建流星
+        for (let i = 0; i < 3; i++) {
+            meteors.push({
+                x: Math.random() * canvas.width,
+                y: -50,
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 3 + 2,
+                size: Math.random() * 2 + 1,
+                trail: [],
+                life: 1,
+                respawnTime: Math.random() * 1000 + 500
+            });
+        }
+
+        this.animations.push(() => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            meteors.forEach(meteor => {
+                if (meteor.life > 0) {
+                    // 更新位置
+                    meteor.x += meteor.vx;
+                    meteor.y += meteor.vy;
+                    
+                    // 添加軌跡點
+                    meteor.trail.push({ x: meteor.x, y: meteor.y, alpha: 1 });
+                    if (meteor.trail.length > 20) {
+                        meteor.trail.shift();
+                    }
+
+                    // 繪製軌跡
+                    meteor.trail.forEach((point, index) => {
+                        const alpha = (index / meteor.trail.length) * meteor.life;
+                        ctx.beginPath();
+                        ctx.arc(point.x, point.y, meteor.size * alpha, 0, 2 * Math.PI);
+                        ctx.fillStyle = `rgba(251, 191, 36, ${alpha * 0.8})`;
+                        ctx.fill();
+                        
+                        if (index === meteor.trail.length - 1) {
+                            ctx.shadowBlur = 10;
+                            ctx.shadowColor = '#fbbf24';
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+                        }
+                    });
+
+                    // 檢查邊界
+                    if (meteor.x < -100 || meteor.x > canvas.width + 100 || 
+                        meteor.y > canvas.height + 100) {
+                        meteor.life = 0;
+                    }
+                } else {
+                    // 重生流星
+                    meteor.respawnTime--;
+                    if (meteor.respawnTime <= 0) {
+                        meteor.x = Math.random() * canvas.width;
+                        meteor.y = -50;
+                        meteor.vx = (Math.random() - 0.5) * 4;
+                        meteor.vy = Math.random() * 3 + 2;
+                        meteor.trail = [];
+                        meteor.life = 1;
+                        meteor.respawnTime = Math.random() * 2000 + 1000;
+                    }
+                }
+            });
+        });
+    }
+
+    setupNavigation() {
+        const cosmicBtns = document.querySelectorAll('.cosmic-btn');
         
-        // 觸發白色覆蓋層從左邊滑入
-        // 使用 setTimeout 確保元素在 DOM 中渲染後再觸發 CSS transition
-        setTimeout(() => {
-            transitionCurtain.style.left = '0%';
-        }, 50); // 微小延遲
+        cosmicBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = btn.getAttribute('href');
+                this.warpToPage(href);
+            });
 
-        // 在覆蓋層滑動過程中，讓 "Experience" 文字漸顯
-        setTimeout(() => {
-            experienceTextDiv.style.opacity = '1';
-        }, 400); // 調整此時間點，讓文字在覆蓋層滑入途中出現
+            // 3D 傾斜效果
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 8;
+                const rotateY = (centerX - x) / 8;
+                
+                btn.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.05)`;
+            });
 
-        // 在覆蓋層完全滑入後跳轉到目標頁面
-        setTimeout(() => {
-            window.location.href = "experience.html";
-        }, 800); // 與 transitionCurtain 的 left 過渡時間 (0.8s) 匹配
-    });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+            });
+        });
 
-    // Writeups 按鈕事件 (同 Experience 按鈕的轉場邏輯)
-    blogBtn.addEventListener("click", (event) => {
-        event.preventDefault();
+        // 狀態欄動態更新
+        this.updateStatusBar();
+    }
 
-        cancelAnimationFrame(animationFrameId);
-        clearTimeout(typeWriterTimeoutId);
-
-        // 創建一個與 Experience 按鈕類似的轉場覆蓋層
-        const transitionCurtain = document.createElement('div');
-        transitionCurtain.id = 'transition-curtain-blog'; // 確保 ID 唯一
-        transitionCurtain.style.cssText = `
+    warpToPage(href) {
+        // 創建流暢的轉場效果
+        const transitionOverlay = document.createElement('div');
+        transitionOverlay.style.cssText = `
             position: fixed;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: #fff;
-            z-index: 200;
-            transition: left 0.8s ease;
-            pointer-events: auto;
-        `;
-        document.body.appendChild(transitionCurtain);
-
-        // 可以在這裡為 Writeups 轉場顯示不同的文字
-        const writeupsTextDiv = document.createElement('div');
-        writeupsTextDiv.innerText = 'Writeups'; // 可以根據需要更改文字
-        writeupsTextDiv.style.cssText = `
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 4rem;
-            color: #000;
+            background: linear-gradient(45deg, 
+                rgba(6,182,212,0.1) 0%, 
+                rgba(139,69,19,0.2) 25%,
+                rgba(34,197,94,0.1) 50%,
+                rgba(147,51,234,0.2) 75%,
+                rgba(2,6,23,0.9) 100%);
+            z-index: 9999;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            font-family: 'Fira Code', monospace;
+            backdrop-filter: blur(0px);
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
         `;
-        transitionCurtain.appendChild(writeupsTextDiv);
+        document.body.appendChild(transitionOverlay);
 
-        mainContent.style.opacity = '0';
-        experienceBtn.style.opacity = '0';
-        blogBtn.style.opacity = '0';
+        // 立即開始轉場動畫
+        requestAnimationFrame(() => {
+            transitionOverlay.style.opacity = '1';
+            transitionOverlay.style.backdropFilter = 'blur(10px)';
+        });
+
+        // 主內容優雅淡出並縮放
+        const mainContainer = document.querySelector('.main-container');
+        mainContainer.style.transition = 'all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        mainContainer.style.opacity = '0';
+        mainContainer.style.transform = 'scale(0.95) translateY(20px)';
+
+        // 星空背景加速
+        const backgroundLayers = document.getElementById('background-layers');
+        if (backgroundLayers) {
+            backgroundLayers.style.transition = 'all 1s ease-out';
+            backgroundLayers.style.opacity = '0.3';
+            backgroundLayers.style.filter = 'blur(2px)';
+        }
 
         setTimeout(() => {
-            transitionCurtain.style.left = '0%';
-        }, 50);
+            window.location.href = href;
+        }, 1200);
+    }
 
-        setTimeout(() => {
-            writeupsTextDiv.style.opacity = '1';
-        }, 400);
+    updateStatusBar() {
+        const statusTexts = [
+            'SYSTEM ONLINE',
+            'WARP READY', 
+            'EXPLORING',
+            'SCANNING COSMOS',
+            'STELLAR NAVIGATION'
+        ];
 
-        setTimeout(() => {
-            alert("轉到文章專區頁面");
-            // 因為沒有實際跳轉，需要在 alert 後將轉場覆蓋層移除並重新顯示內容
-            if (transitionCurtain.parentNode) {
-                transitionCurtain.parentNode.removeChild(transitionCurtain);
+        const statusItems = document.querySelectorAll('.status-text');
+        let textIndex = 0;
+
+        setInterval(() => {
+            statusItems.forEach((item, index) => {
+                if (index === 1) { // 中間的狀態項目
+                    item.textContent = statusTexts[textIndex];
+                }
+            });
+            textIndex = (textIndex + 1) % statusTexts.length;
+        }, 3000);
+    }
+
+    startAnimationLoop() {
+        const animate = () => {
+            if (this.isLoaded) {
+                this.animations.forEach(animation => animation());
             }
-            mainContent.style.opacity = '1';
-            experienceBtn.style.opacity = '1';
-            blogBtn.style.opacity = '1';
-            animate();
-            setTimeout(typeWriter, 1000);
-        }, 800);
+            requestAnimationFrame(animate);
+        };
+        animate();
+    }
+
+    handleResize() {
+        Object.values(this.canvases).forEach(({ canvas }) => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    startTextRotation() {
+        const rotatingText = document.getElementById('rotating-text');
+        const cursor = document.querySelector('.cursor');
+        const texts = [
+            'a Blue Team player',
+            'a B33F 50uP member', 
+            'a forensics player',
+            'a cybersecurity enthusiast',
+            'a sophomore at SAIHS',
+            'exploring the digital universe'
+        ];
+        
+        let currentIndex = 0;
+        let isDeleting = false;
+        let currentText = '';
+        let typeSpeed = 80;
+        
+        const typeWriter = () => {
+            const fullText = texts[currentIndex];
+            
+            if (isDeleting) {
+                currentText = fullText.substring(0, currentText.length - 1);
+                typeSpeed = 40;
+            } else {
+                currentText = fullText.substring(0, currentText.length + 1);
+                typeSpeed = 80;
+            }
+            
+            rotatingText.textContent = currentText;
+            
+            // 動態調整光標位置
+            const textWidth = rotatingText.offsetWidth;
+            cursor.style.left = textWidth + 'px';
+            
+            if (!isDeleting && currentText === fullText) {
+                // 停留2秒後開始刪除
+                setTimeout(() => {
+                    isDeleting = true;
+                    typeWriter();
+                }, 2000);
+                return;
+            }
+            
+            if (isDeleting && currentText === '') {
+                isDeleting = false;
+                currentIndex = (currentIndex + 1) % texts.length;
+                typeSpeed = 500; // 下一個字詞前的停頓
+            }
+            
+            setTimeout(typeWriter, typeSpeed);
+        };
+        
+        // 延遲1秒後開始動畫
+        setTimeout(() => {
+            typeWriter();
+        }, 1000);
+    }
+
+    startUptimeDisplay() {
+        const uptimeDisplay = document.getElementById('uptime-display');
+        // 假設網站上線時間 (你可以修改這個日期)
+        const siteStartDate = new Date('2025-08-06T00:00:00Z');
+        
+        const updateUptime = () => {
+            const now = new Date();
+            const uptime = now - siteStartDate;
+            
+            const days = Math.floor(uptime / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((uptime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((uptime % (1000 * 60 * 60)) / (1000 * 60));
+            
+            let uptimeString = '';
+            if (days > 0) {
+                uptimeString += `${days}D `;
+            }
+            if (hours > 0) {
+                uptimeString += `${hours}H `;
+            }
+            uptimeString += `${minutes}M`;
+            
+            uptimeDisplay.textContent = uptimeString;
+        };
+        
+        // 立即更新一次
+        updateUptime();
+        
+        // 每分鐘更新一次
+        setInterval(updateUptime, 60000);
+    }
+}
+
+// ========== 系統初始化 ==========
+document.addEventListener('DOMContentLoaded', () => {
+    const cosmicExplorer = new CosmicExplorer();
+
+    // 視窗調整
+    window.addEventListener('resize', () => {
+        cosmicExplorer.handleResize();
     });
+
+    // 鍵盤快捷鍵
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const frame = document.querySelector('.cosmic-frame');
+            frame.style.opacity = frame.style.opacity === '0' ? '1' : '0';
+        }
+    });
+
+    console.log('🌌 宇宙探索者系統已啟動');
 });
+
+// 動態樣式
+const dynamicStyles = document.createElement('style');
+dynamicStyles.textContent = `
+    @keyframes cosmicFadeOut {
+        to { 
+            opacity: 0; 
+            transform: scale(0.7) translateY(-100px);
+            filter: blur(10px);
+        }
+    }
+    
+    @keyframes warpDrive {
+        0% { 
+            transform: scale(1) rotate(0deg);
+            opacity: 0;
+        }
+        50% { 
+            transform: scale(1.5) rotate(180deg);
+            opacity: 0.8;
+        }
+        100% { 
+            transform: scale(50) rotate(720deg);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(dynamicStyles);

@@ -3,33 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hanrui's blog</title>
+  <title>HANRUI // MY BLOG</title>
   <link rel="stylesheet" href="style.css">
-  <!-- 載入 Fira Code 字體，以便轉場文字使用 -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Index 頁面本身的轉場覆蓋層 (用於載入動畫) -->
-  <div id="index-transition-overlay"></div>
-
-  <canvas id="canvas"></canvas>
-  
-  <div class="content" id="mainContent">
-    <div id="title">💫</div>
-    <div id="name">Hanrui.</div>
-    <div id="description">
-      Sophomore year of high school from SAIHS, Interested in blue team and forensics, B33F 50uP team member.
+  <!-- 宇宙載入器 -->
+  <div id="cosmic-loader">
+    <div class="loader-core">
+      <div class="cosmic-ring outer"></div>
+      <div class="cosmic-ring middle"></div>
+      <div class="cosmic-ring inner"></div>
+      <div class="loader-center">
+        <div class="loader-text">ENTERING COSMOS</div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+        <div class="loader-status">INITIALIZING UNIVERSE...</div>
+      </div>
     </div>
-    <div id="dynamic-text"></div>
+    <div class="cosmic-background"></div>
   </div>
 
-  <!-- 按鈕 -->
-  <button class="btn experienceBtn" id="experienceBtn">
-    <span class="btn-highlight"></span>Experience
-  </button>
-  <button class="btn writeupsBtn" id="blogBtn">
-    <span class="btn-highlight"></span>Writeups
-  </button>
+  <!-- 背景動畫層 -->
+  <div id="background-layers">
+    <canvas id="starfield" class="bg-layer"></canvas>
+    <canvas id="nebula" class="bg-layer"></canvas>
+    <canvas id="meteors" class="bg-layer"></canvas>
+  </div>
+
+  <!-- 主要內容 -->
+  <div class="main-container">
+    <!-- 宇宙掃描線 -->
+    <div class="cosmic-frame">
+      <div class="scan-line horizontal"></div>
+      <div class="scan-line vertical"></div>
+    </div>
+
+    <!-- 內容核心 -->
+    <div class="content-core">
+      <!-- 標題區域 -->
+      <div class="title-section">
+        <h1 class="cosmic-title" data-text="HANRUI">HANRUI</h1>
+        <div class="subtitle-container">
+          <span class="subtitle-prefix">[</span>
+          <span class="subtitle-text">WELCOME TO MY BLOG</span>
+          <span class="subtitle-suffix">]</span>
+        </div>
+        <div class="cosmic-divider"></div>
+      </div>
+
+      <!-- 動態個人介紹 -->
+      <div class="intro-text">
+        <span class="intro-prefix">I'm </span>
+        <span id="rotating-text" class="rotating-text"></span>
+        <span class="cursor">_</span>
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="navigation-cluster">
+        <a href="experience.html" class="cosmic-btn primary">
+          <div class="btn-core"></div>
+          <div class="btn-content">
+            <span class="btn-icon">🛸</span>
+            <span class="btn-text">EXPERIENCE</span>
+            <span class="btn-subtitle">ACHIEVEMENTS</span>
+          </div>
+          <div class="btn-glow"></div>
+        </a>
+
+        <a href="writeup.html" class="cosmic-btn secondary">
+          <div class="btn-core"></div>
+          <div class="btn-content">
+            <span class="btn-icon">🌌</span>
+            <span class="btn-text">WRITEUPS</span>
+            <span class="btn-subtitle">RESEARCH</span>
+          </div>
+          <div class="btn-glow"></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 網站狀態顯示 -->
+  <div class="site-status">
+    <div class="status-indicator">
+      <div class="status-dot online"></div>
+      <span class="status-text">SITE ONLINE SINCE: <span id="uptime-display">CALCULATING...</span></span>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
