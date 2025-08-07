@@ -1,3 +1,7 @@
+// 立即測試 - 這應該會立即執行
+console.log('=== JavaScript file loaded ===');
+console.log('Script execution started at:', new Date().toISOString());
+
 // 星空特效和文章管理系統
 class WriteupStarfield {
     constructor() {
@@ -229,7 +233,6 @@ const writeupSystem = {
     openArticle(articleId) {
         const article = this.articles[articleId];
         if (!article) {
-            console.error('Article not found:', articleId);
             return;
         }
         this.createArticleReader(article);
@@ -251,10 +254,23 @@ const writeupSystem = {
                     <span class="reader-author">by ${article.author}</span>
                 </div>
             </div>
-            <div class="reader-content">
-                <div class="loading-indicator">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">Loading article...</div>
+            <div class="reader-body">
+                <div class="toc-container">
+                    <div class="toc-header">
+                        <h3 class="toc-title">目錄</h3>
+                    </div>
+                    <div class="toc-content" id="toc-content">
+                        <div class="loading-indicator">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-text">正在生成目錄...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="reader-content">
+                    <div class="loading-indicator">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">Loading article...</div>
+                    </div>
                 </div>
             </div>
         `;
@@ -262,7 +278,6 @@ const writeupSystem = {
         document.body.appendChild(reader);
 
         try {
-            // 更安全的 fetch 方式，加上絕對路徑
             const response = await fetch(`./${article.file}?t=${Date.now()}`);
             if (!response.ok) {
                 throw new Error(`檔案不存在或無法讀取: ${article.file}`);
@@ -275,7 +290,6 @@ const writeupSystem = {
             
             this.renderMarkdown(reader, markdownContent);
         } catch (error) {
-            console.error('Error loading article:', error);
             this.showArticleError(reader, error);
         }
 
@@ -292,7 +306,13 @@ const writeupSystem = {
                 <div class="back-to-top" onclick="writeupSystem.scrollToTop()">↑ Back to Top</div>
             </div>
         `;
+        
         this.enhanceContent(contentDiv);
+        
+        // 初始化目錄功能
+        setTimeout(() => {
+            this.initTOC(reader);
+        }, 100);
     },
 
     parseMarkdown(markdown) {
@@ -468,6 +488,11 @@ const writeupSystem = {
     closeReader() {
         const reader = document.querySelector('.article-reader');
         if (reader) {
+            // 清理 IntersectionObserver
+            if (reader._tocObserver) {
+                reader._tocObserver.disconnect();
+            }
+            
             reader.classList.remove('active');
             setTimeout(() => reader.remove(), 300);
         }
@@ -475,7 +500,121 @@ const writeupSystem = {
 
     scrollToTop() {
         document.querySelector('.reader-content').scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    },
+
+    // 簡化版目錄功能 - 只保留導航功能
+    initTOC(reader) {
+        this.generateTOC(reader);
+        this.setupScrollSpy(reader);
+    },
+
+    // 生成目錄
+    generateTOC(reader) {
+        const tocContent = reader.querySelector('#toc-content');
+        const articleContent = reader.querySelector('.article-content');
+        
+        if (!tocContent || !articleContent) {
+            return;
+        }
+        
+        const headings = articleContent.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        
+        if (headings.length === 0) {
+            tocContent.innerHTML = `
+                <div class="toc-empty-state">
+                    <div class="toc-empty-icon">📄</div>
+                    <div class="toc-empty-text">此文章沒有標題</div>
+                    <div class="toc-empty-subtext">文章內容暫無可導航的標題</div>
+                </div>
+            `;
+            return;
+        }
+
+        let tocHTML = '';
+        headings.forEach((heading, index) => {
+            const headingId = `heading-${index}`;
+            heading.id = headingId;
+            
+            const level = heading.tagName.toLowerCase();
+            const text = heading.textContent.trim();
+            
+            tocHTML += `
+                <a href="#${headingId}" class="toc-item ${level}" data-heading="${headingId}">
+                    ${text}
+                </a>
+            `;
+        });
+
+        tocContent.innerHTML = tocHTML;
+        
+        // 添加點擊事件
+        this.setupTOCClicks(reader);
+    },
+
+    // 設置目錄點擊事件
+    setupTOCClicks(reader) {
+        const tocItems = reader.querySelectorAll('.toc-item');
+        const articleContent = reader.querySelector('.article-content');
+        const readerContent = reader.querySelector('.reader-content');
+        
+        tocItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = item.getAttribute('data-heading');
+                const targetElement = articleContent.querySelector(`#${targetId}`);
+                
+                if (targetElement && readerContent) {
+                    const offsetTop = targetElement.offsetTop - 100;
+                    
+                    readerContent.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 更新活動狀態
+                    tocItems.forEach(tocItem => tocItem.classList.remove('active'));
+                    item.classList.add('active');
+                }
+            });
+        });
+    },
+
+    // 設置滾動監控
+    setupScrollSpy(reader) {
+        const readerContent = reader.querySelector('.reader-content');
+        const headings = reader.querySelectorAll('.article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content h5, .article-content h6');
+        
+        if (headings.length === 0) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const headingId = entry.target.id;
+                    const tocItems = reader.querySelectorAll('.toc-item');
+                    
+                    // 移除所有活動狀態
+                    tocItems.forEach(item => item.classList.remove('active'));
+                    
+                    // 添加當前標題的活動狀態
+                    const activeTocItem = reader.querySelector(`[data-heading="${headingId}"]`);
+                    if (activeTocItem) {
+                        activeTocItem.classList.add('active');
+                    }
+                }
+            });
+        }, {
+            root: readerContent,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        });
+
+        headings.forEach(heading => {
+            observer.observe(heading);
+        });
+
+        // 存儲 observer 以便後續清理
+        reader._tocObserver = observer;
+    },
 };
 
 // 全域函數
@@ -483,7 +622,22 @@ function openWriteup(articleId) {
     writeupSystem.openArticle(articleId);
 }
 
+// 確保函數掛載到 window 對象
+window.openWriteup = openWriteup;
+
 // 初始化系統
 document.addEventListener('DOMContentLoaded', () => {
-    new WriteupStarfield();
+    try {
+        new WriteupStarfield();
+    } catch (error) {
+        console.error('Error initializing WriteupStarfield:', error);
+    }
+    
+    // 手動綁定點擊事件作為備用方案
+    const writeupCard = document.querySelector('.writeup-card');
+    if (writeupCard) {
+        writeupCard.addEventListener('click', () => {
+            openWriteup('scist-final-ctf');
+        });
+    }
 });
