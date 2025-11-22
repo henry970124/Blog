@@ -3,96 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HANRUI // MY BLOG</title>
+  <title>Hanrui's blog.</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark-mode');
+    }
+  </script>
 </head>
-<body>
-  <!-- 宇宙載入器 -->
-  <div id="cosmic-loader">
-    <div class="loader-core">
-      <div class="cosmic-ring outer"></div>
-      <div class="cosmic-ring middle"></div>
-      <div class="cosmic-ring inner"></div>
-      <div class="loader-center">
-        <div class="loader-text">ENTERING COSMOS</div>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
-        <div class="loader-status">INITIALIZING UNIVERSE...</div>
-      </div>
-    </div>
-    <div class="cosmic-background"></div>
-  </div>
+<body class="">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="切換深色模式">
+    <span class="theme-icon">🌙</span>
+  </button>
+  <div class="container">
+    <header>
+      <h1>Hanrui</h1>
+      <p class="subtitle">到處逛逛?</p>
+    </header>
 
-  <!-- 背景動畫層 -->
-  <div id="background-layers">
-    <canvas id="starfield" class="bg-layer"></canvas>
-    <canvas id="nebula" class="bg-layer"></canvas>
-    <canvas id="meteors" class="bg-layer"></canvas>
-  </div>
+    <main>
+      <section class="intro">
+        <p>A blue team player</p>
+        <p>亂想。</p>
+      </section>
 
-  <!-- 主要內容 -->
-  <div class="main-container">
-    <!-- 宇宙掃描線 -->
-    <div class="cosmic-frame">
-      <div class="scan-line horizontal"></div>
-      <div class="scan-line vertical"></div>
-    </div>
-
-    <!-- 內容核心 -->
-    <div class="content-core">
-      <!-- 標題區域 -->
-      <div class="title-section">
-        <h1 class="cosmic-title" data-text="HANRUI">HANRUI</h1>
-        <div class="subtitle-container">
-          <span class="subtitle-prefix">[</span>
-          <span class="subtitle-text">WELCOME TO MY BLOG</span>
-          <span class="subtitle-suffix">]</span>
-        </div>
-        <div class="cosmic-divider"></div>
-      </div>
-
-      <!-- 動態個人介紹 -->
-      <div class="intro-text">
-        <span class="intro-prefix">I'm </span>
-        <span id="rotating-text" class="rotating-text"></span>
-        <span class="cursor">_</span>
-      </div>
-
-      <!-- 導航按鈕 -->
-      <div class="navigation-cluster">
-        <a href="experience.html" class="cosmic-btn primary">
-          <div class="btn-core"></div>
-          <div class="btn-content">
-            <span class="btn-icon">🛸</span>
-            <span class="btn-text">EXPERIENCE</span>
-            <span class="btn-subtitle">ACHIEVEMENTS</span>
-          </div>
-          <div class="btn-glow"></div>
+      <nav class="nav-links">
+        <a href="experience.html" class="nav-btn">
+          <h2>Experience</h2>
+          <p>經歷</p>
         </a>
-
-        <a href="writeup.html" class="cosmic-btn secondary">
-          <div class="btn-core"></div>
-          <div class="btn-content">
-            <span class="btn-icon">🌌</span>
-            <span class="btn-text">WRITEUPS</span>
-            <span class="btn-subtitle">RESEARCH</span>
-          </div>
-          <div class="btn-glow"></div>
+        <a href="talks.html" class="nav-btn">
+          <h2>Talks</h2>
+          <p>一些屁話</p>
         </a>
-      </div>
-    </div>
+      </nav>
+    </main>
   </div>
-
-  <!-- 網站狀態顯示 -->
-  <div class="site-status">
-    <div class="status-indicator">
-      <div class="status-dot online"></div>
-      <span class="status-text">SITE ONLINE SINCE: <span id="uptime-display">CALCULATING...</span></span>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+  <script src="page-transition.js"></script>
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const html = document.documentElement;
+      const icon = document.querySelector('.theme-icon');
+      body.classList.toggle('dark-mode');
+      html.classList.toggle('dark-mode');
+      const isDark = body.classList.contains('dark-mode');
+      icon.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      if (document.querySelector('.theme-icon')) {
+        document.querySelector('.theme-icon').textContent = '☀️';
+      }
+    }
+  </script>
 </body>
 </html>

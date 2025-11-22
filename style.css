@@ -1,19 +1,3 @@
-/* ========== 宇宙探索者 - 壯觀簡潔版 ========== */
-:root {
-  --cosmic-blue: #1e3a8a;
-  --star-white: #ffffff;
-  --nebula-purple: #6366f1;
-  --galaxy-cyan: #06b6d4;
-  --cosmic-dark: #0f0f23;
-  --deep-space: #020617;
-  --star-gold: #fbbf24;
-  --aurora-green: #10b981;
-  
-  --glow-primary: 0 0 30px var(--galaxy-cyan);
-  --glow-secondary: 0 0 20px var(--nebula-purple);
-  --glow-star: 0 0 15px var(--star-gold);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -21,618 +5,174 @@
 }
 
 body {
-  font-family: 'Orbitron', sans-serif;
-  background: linear-gradient(135deg, var(--cosmic-blue) 0%, var(--cosmic-dark) 50%, var(--deep-space) 100%);
-  color: var(--star-white);
-  overflow: hidden;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-/* ========== 宇宙載入器 ========== */
-#cosmic-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, var(--cosmic-dark) 0%, var(--deep-space) 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.6;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
-  transform-origin: center;
-}
-
-.cosmic-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(2px 2px at 20px 30px, var(--star-white), transparent),
-    radial-gradient(2px 2px at 40px 70px, var(--star-white), transparent),
-    radial-gradient(1px 1px at 90px 40px, var(--star-white), transparent),
-    radial-gradient(1px 1px at 130px 80px, var(--star-white), transparent),
-    radial-gradient(2px 2px at 160px 30px, var(--star-white), transparent);
-  background-size: 200px 100px;
-  animation: starTwinkle 4s ease-in-out infinite alternate;
-  opacity: 0.6;
-}
-
-.loader-core {
-  position: relative;
-  width: 300px;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cosmic-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 2px solid transparent;
-}
-
-.cosmic-ring.outer {
-  width: 250px;
-  height: 250px;
-  border-top: 3px solid var(--galaxy-cyan);
-  border-right: 3px solid var(--nebula-purple);
-  animation: cosmicSpin 3s linear infinite;
-  box-shadow: var(--glow-primary);
-}
-
-.cosmic-ring.middle {
-  width: 180px;
-  height: 180px;
-  border-left: 2px solid var(--star-gold);
-  border-bottom: 2px solid var(--aurora-green);
-  animation: cosmicSpin 2s linear infinite reverse;
-  box-shadow: var(--glow-star);
-}
-
-.cosmic-ring.inner {
-  width: 110px;
-  height: 110px;
-  border: 2px solid var(--galaxy-cyan);
-  border-style: dashed;
-  animation: cosmicSpin 4s linear infinite;
-}
-
-.loader-center {
-  text-align: center;
-  z-index: 10;
-}
-
-.loader-text {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--galaxy-cyan);
-  text-shadow: var(--glow-primary);
-  margin-bottom: 20px;
-  animation: cosmicPulse 2s ease-in-out infinite;
-}
-
-.progress-bar {
-  width: 200px;
-  height: 4px;
-  background: rgba(6, 182, 212, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
-  margin: 0 auto 15px;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--galaxy-cyan), var(--nebula-purple), var(--star-gold));
-  border-radius: 2px;
-  animation: cosmicProgress 3s ease-out forwards;
-}
-
-.loader-status {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.7);
-  opacity: 0.8;
-}
-
-/* ========== 背景層 ========== */
-#background-layers {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.bg-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-#starfield { z-index: 1; }
-#nebula { z-index: 2; opacity: 0.4; }
-#meteors { z-index: 3; opacity: 0.7; }
-
-/* ========== 主容器 ========== */
-.main-container {
-  position: relative;
-  z-index: 10;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  animation: cosmicFadeIn 2s ease 3.5s forwards;
   padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ========== 宇宙邊框 ========== */
-.cosmic-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* ========== 深色模式 ========== */
+html.dark-mode body,
+body.dark-mode {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+html.dark-mode header,
+body.dark-mode header {
+  border-bottom-color: #333;
+}
+
+html.dark-mode header h1,
+body.dark-mode header h1 {
+  color: #e0e0e0;
+}
+
+html.dark-mode .subtitle,
+html.dark-mode .intro p,
+html.dark-mode .nav-btn p,
+body.dark-mode .subtitle,
+body.dark-mode .intro p,
+body.dark-mode .nav-btn p {
+  color: #999;
+}
+
+html.dark-mode .nav-btn,
+body.dark-mode .nav-btn {
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+html.dark-mode .nav-btn:hover,
+body.dark-mode .nav-btn:hover {
+  border-color: #666;
+  background: #222;
+}
+
+.container {
+  max-width: 800px;
   width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
 }
 
-/* 移除角落方塊 - 使用更簡潔的設計 */
-
-.scan-line.horizontal {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(6, 182, 212, 0.3) 50%, 
-    transparent 100%);
-  animation: scanHorizontal 12s ease-in-out infinite;
-  opacity: 0.5;
-}
-
-.scan-line.vertical {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  background: linear-gradient(180deg, 
-    transparent 0%, 
-    rgba(99, 102, 241, 0.3) 50%, 
-    transparent 100%);
-  animation: scanVertical 15s ease-in-out infinite;
-  opacity: 0.5;
-}
-
-/* ========== 內容核心 ========== */
-.content-core {
-  max-width: 900px;
-  padding: 50px;
-  /* 移除框框樣式 - 純透明容器 */
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  backdrop-filter: none;
-  box-shadow: none;
-  position: relative;
-  min-height: 400px;
-}
-
-/* ========== 標題區域 ========== */
-.title-section {
+header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.cosmic-title {
-  font-size: 4.5rem;
-  font-weight: 900;
-  color: var(--star-white);
-  text-transform: uppercase;
-  letter-spacing: 8px;
-  position: relative;
-  text-shadow: 
-    0 0 20px var(--galaxy-cyan),
-    0 0 40px var(--galaxy-cyan),
-    0 0 60px var(--galaxy-cyan);
-  animation: cosmicGlow 3s ease-in-out infinite alternate;
-  margin-bottom: 20px;
-}
-
-.subtitle-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Fira Code', monospace;
-  font-size: 1.3rem;
-  margin-bottom: 30px;
-}
-
-.subtitle-prefix,
-.subtitle-suffix {
-  color: var(--galaxy-cyan);
-  font-weight: bold;
-  text-shadow: var(--glow-primary);
-}
-
-.subtitle-text {
-  margin: 0 15px;
-  color: var(--star-white);
-  white-space: nowrap;
-  display: inline-block;
-}
-
-.cosmic-divider {
-  height: 3px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--galaxy-cyan), 
-    var(--nebula-purple), 
-    var(--star-gold), 
-    transparent);
-  margin: 0 auto;
-  max-width: 400px;
-  border-radius: 2px;
-  box-shadow: var(--glow-primary);
-}
-
-/* ========== 動態個人介紹 ========== */
-.intro-text {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 20px 0;
-  font-family: 'Orbitron', monospace;
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--star-white);
-  letter-spacing: 1px;
-  position: relative;
-}
-
-.intro-prefix {
-  color: var(--galaxy-cyan);
-  text-shadow: var(--glow-primary);
-}
-
-.rotating-text {
-  color: var(--star-gold);
-  text-shadow: var(--glow-star);
+header h1 {
+  font-size: 3rem;
   font-weight: 700;
-  position: relative;
-  display: inline-block;
-}
-
-.cursor {
-  color: var(--galaxy-cyan);
-  animation: blink 1s infinite;
-  font-weight: 400;
-}
-
-@keyframes blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-@keyframes typeWriter {
-  from { 
-    width: 0;
-    max-width: 0;
-  }
-  to { 
-    width: 100%;
-    max-width: 300px;
-  }
-}
-
-@keyframes deleteText {
-  from { width: 100%; }
-  to { width: 0; }
-}
-
-/* ========== 導航按鈕 ========== */
-.navigation-cluster {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.cosmic-btn {
-  position: relative;
-  display: block;
-  text-decoration: none;
-  background: linear-gradient(145deg, 
-    rgba(6, 182, 212, 0.1), 
-    rgba(99, 102, 241, 0.1));
-  border: 2px solid var(--galaxy-cyan);
-  border-radius: 15px;
-  padding: 20px 30px;
-  min-width: 200px;
-  text-align: center;
-  transition: all 0.4s ease;
-  overflow: hidden;
-}
-
-.cosmic-btn.primary {
-  border-color: var(--galaxy-cyan);
-  box-shadow: var(--glow-primary);
-}
-
-.cosmic-btn.secondary {
-  border-color: var(--nebula-purple);
-  box-shadow: var(--glow-secondary);
-}
-
-.cosmic-btn:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 
-    0 20px 40px rgba(6, 182, 212, 0.3),
-    var(--glow-primary);
-}
-
-.btn-core {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.2), 
-    transparent);
-  transition: left 0.6s ease;
-}
-
-.cosmic-btn:hover .btn-core {
-  left: 100%;
-}
-
-.btn-content {
-  position: relative;
-  z-index: 2;
-}
-
-.btn-icon {
-  display: block;
-  font-size: 2rem;
-  margin-bottom: 8px;
-}
-
-.btn-text {
-  display: block;
-  font-family: 'Orbitron', monospace;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--star-white);
-  text-transform: uppercase;
+  color: #1a1a1a;
+  margin-bottom: 10px;
   letter-spacing: 2px;
-  margin-bottom: 5px;
 }
 
-.btn-subtitle {
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.intro {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.intro p {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.8;
+}
+
+.nav-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.nav-btn {
   display: block;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.7);
-  text-transform: uppercase;
+  padding: 40px 30px;
+  text-decoration: none;
+  color: #1a1a1a;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+  text-align: center;
 }
 
-/* ========== 網站狀態顯示 ========== */
-.site-status {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
+.nav-btn:hover {
+  border-color: #1a1a1a;
+  background: #fafafa;
 }
 
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 12px 20px;
-  border: 1px solid rgba(6, 182, 212, 0.4);
-  border-radius: 25px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+.nav-btn h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
 }
 
-.status-dot.online {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--aurora-green);
-  box-shadow: 
-    0 0 10px var(--aurora-green),
-    0 0 20px var(--aurora-green);
-  animation: onlinePulse 2s ease-in-out infinite;
-}
-
-.status-indicator .status-text {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.75rem;
-  color: var(--star-white);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-@keyframes onlinePulse {
-  0%, 100% { 
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 0.6;
-    transform: scale(1.2);
-  }
-}
-
-/* ========== 動畫效果 ========== */
-@keyframes starTwinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.8; }
-}
-
-@keyframes cosmicSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes cosmicPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.05); }
-}
-
-@keyframes cosmicProgress {
-  from { width: 0%; }
-  to { width: 100%; }
-}
-
-@keyframes cosmicFadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scanHorizontal {
-  0%, 100% { 
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  10%, 90% { opacity: 1; }
-  50% { 
-    opacity: 1;
-    transform: translateX(100%);
-  }
-}
-
-@keyframes scanVertical {
-  0%, 100% { 
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  10%, 90% { opacity: 1; }
-  50% { 
-    opacity: 1;
-    transform: translateY(100%);
-  }
-}
-
-@keyframes cosmicBorder {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes cosmicGlow {
-  0%, 100% { 
-    text-shadow: 
-      0 0 20px var(--galaxy-cyan),
-      0 0 40px var(--galaxy-cyan),
-      0 0 60px var(--galaxy-cyan);
-  }
-  50% { 
-    text-shadow: 
-      0 0 10px var(--star-gold),
-      0 0 20px var(--star-gold),
-      0 0 40px var(--star-gold);
-  }
-}
-
-@keyframes typeWriter {
-  from { width: 0; }
-  to { width: 14ch; }
-}
-
-@keyframes statusPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+.nav-btn p {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 400;
 }
 
 /* ========== 響應式設計 ========== */
 @media (max-width: 768px) {
-  .cosmic-title {
-    font-size: 3rem;
-    letter-spacing: 4px;
+  header h1 {
+    font-size: 2rem;
   }
-  
-  .navigation-cluster {
-    flex-direction: column;
-    gap: 20px;
+
+  .intro p {
+    font-size: 1rem;
   }
-  
-  .cosmic-btn {
-    min-width: auto;
-    padding: 15px 20px;
-  }
-  
-  .info-grid {
+
+  .nav-links {
     grid-template-columns: 1fr;
   }
-  
-  .content-core {
-    margin: 20px;
+
+  .nav-btn {
     padding: 30px 20px;
-  }
-  
-  .site-status {
-    bottom: 15px;
-  }
-  
-  .status-indicator {
-    padding: 10px 16px;
-  }
-  
-  .status-indicator .status-text {
-    font-size: 0.7rem;
-  }
-  
-  .frame-corner {
-    width: 50px;
-    height: 50px;
   }
 }
 
-@media (max-width: 480px) {
-  .cosmic-title {
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-  }
-  
-  .subtitle-container {
-    font-size: 1rem;
-  }
-  
-  .loader-core {
-    width: 250px;
-    height: 250px;
-  }
-  
-  .cosmic-ring.outer {
-    width: 200px;
-    height: 200px;
-  }
-  
-  .cosmic-ring.middle {
-    width: 140px;
-    height: 140px;
-  }
-  
-  .cosmic-ring.inner {
-    width: 80px;
-    height: 80px;
-  }
+/* ========== 主題切換按鈕 ========== */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: 1px solid #e0e0e0;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  border-color: #1a1a1a;
+  background: #fafafa;
+}
+
+html.dark-mode .theme-toggle,
+body.dark-mode .theme-toggle {
+  border-color: #333;
+}
+
+html.dark-mode .theme-toggle:hover,
+body.dark-mode .theme-toggle:hover {
+  border-color: #666;
+  background: #222;
 }
